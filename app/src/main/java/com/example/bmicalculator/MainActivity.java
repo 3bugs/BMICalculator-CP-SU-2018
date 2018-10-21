@@ -4,11 +4,12 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.example.bmicalculator.model.Body;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,23 +26,12 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 EditText heightEditText = findViewById(R.id.height_edit_text);
                 EditText weightEditText = findViewById(R.id.weight_edit_text);
+
                 int h = Integer.parseInt(heightEditText.getText().toString());
                 int w = Integer.parseInt(weightEditText.getText().toString());
-                float bmi = calculateBmi(h, w);
 
-                String resultText = null;
-                if (bmi < 18.5) {
-                    resultText = "ผอมเกินไป";
-                } else if (bmi < 25) {
-                    resultText = "น้ำหนักปกติ ไม่อ้วนไม่ผอม";
-                } else if (bmi < 30) {
-                    resultText = "อ้วน";
-                } else {
-                    resultText = "อ้วนมาก";
-                }
-
-                //String msg = "ค่า BMI เท่ากับ " + String.format(Locale.US, "%.2f", bmi);
-                String msg = "น้ำหนักของคุณอยู่ในเกณฑ์: " + resultText;
+                Body body = new Body(h, w);
+                String msg = "น้ำหนักของคุณอยู่ในเกณฑ์: " + body.getResultText();
 
                 Toast.makeText(
                         MainActivity.this,
@@ -63,14 +53,4 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-    private float calculateBmi(int heightInCm, int weightInKg) {
-        // สูตรคำนวณ bmi = kg / m^2
-        float height = heightInCm / 100f;
-        Log.i(TAG, "ความสูงหน่วยเมตร = " + String.valueOf(height));
-
-        float bmi = weightInKg / (height * height);
-        return bmi;
-    }
-
 }
